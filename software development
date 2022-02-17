@@ -25,8 +25,9 @@ What I will learn from this book?
 	
 	
 	
-
-## Chapter One ##
+	
+## Chapter 1 
+   Introduction to Software Development ##
 
 
 Software development is the process of:
@@ -35,10 +36,76 @@ Software development is the process of:
 	- design a solution based on requirements
 	- implementing that solution on a computer
 	
-
+	
 Software development is a part of software engineering.
 Software engineering includes team management, KPI monitoring, and so other things.
 Programing is a part of software development. 
+
+
+Software design skill is hard to achieve. You can't learn by reading books, and tutorials.
+Because every solution program will different, and some have no answer at all.
+Only doing it by hand, again and again, will help build a mental model like the master.
+
+Here is a list, you can improve your design skills:
+	- Reading existing excellent design
+	- Reading lots of code example code
+	- Writing code
+	- Thinking deeply about your problems
+	
+
+In order to do software development well, we need this list of things:
+	- A small, well-integrated team
+	- Good comunication with team and cutomer
+	- A project plan that every one buys into (team & customer)
+	- To know where you are at all times
+	- The right tools and the right practices for this project
+	- To realize and ready for, that you don't know everything about project and ready for beginning
+	
+	
+Over come all of things, and building a solution (code) that works is a cooles fellings in the world.
+
+
+
+
+
+## Chapter Two
+   Software Process Models ##
+
+
+Program life cycle:
+	1. Conception
+	2. Requirements gathering
+	3. Design
+	4. Coding and debugging
+	5. Testing
+	6. Release
+	7. Maintenance
+	8. Retirement
+
+
+There are two type of project life cycle management models:
+	- Code & Fix
+	- Plan-driven models
+	- Agile development models
+	
+
+Four factors are common for all software development projects that make count in desing:
+	- Cost
+	- Time
+	- Feature
+	- Quality
+	
+"Code & Fix" models, that we all use in our Python tutorial, blogs, freelancing projects.
+This model has this list:
+	- Conceptual Developmetn
+	- Code & Fix (Again, and agin)
+	- Release product
+
+
+	
+
+	
+	
 
 
 
