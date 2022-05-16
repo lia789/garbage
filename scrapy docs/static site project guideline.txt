@@ -1,0 +1,157 @@
+
+
+------------------------ Static site project guideline
+
+
+### Job 1
+----Be sure it is a static site.
+
+
+### Job 2
+----Understand project goal and write down recruitment data.
+
+
+
+### Job 3
+----Do back ground research about target website.
+		- Check robots.txt
+		- Read data polacy
+		- Estimates a site through google crawler (site:url)
+		- Write down how many page should you need to crawl
+
+
+### Job 4
+---- Write down site navigation staracture and Data extract plan.
+     More your scratch with pen and paper good more your job will be good.
+
+
+
+### Job 5
+----Configer Scrapy Project On Vs code
+
+		Step 1: Create virtual env
+				>>virtualenv env
+		Step 2: Install Scrapy
+				>>pip install scrapy
+		Step 3: Create Scrapy Project and Spider
+
+
+### Job 6
+-----Write code as riquerment as Spider.
+     You can follow:
+		- Python documentation.
+		- Code snipetfile.txt
+		- Github project "URL"
+
+
+### Job 7
+----Clean Data and ready for SQL database.
+	
+		Step 1: Write down exactly output format and markdown data cleaning jobs. And do cleaning as your requerment.
+		Step 2: Convert yield to Item object
+				# In items.py file declare items
+						>> column1=scrapy.Field()
+		   				   column2=scrapy.Field()
+		   				   column3=scrapy.Field()
+				# In Spider need to import item class
+						>>from ..items import ClassNameItem
+				# Create item class object
+						>>item=ClassNameItem()
+				# Assign each field to the item object
+						>>item["Column1"]=ColumnName1XpathExtractData
+		  				  item["Column2"]=ColumnName2XpathExtractData
+		  				  item["Column3"]=ColumnName3XpathExtractData
+
+		 				  yield item
+		Step 3: To clean data it is recomendent use inside spider before passing in item object.
+			You can make your own with search and look github project.
+			Look also your spider code with Itemloader scrapy. Find out it help full or not in your project.
+
+		Step 4: Run spider and check all is alright.
+
+
+### Job 8
+----Configer Spider with Database.
+
+		Step 1: Creat A remote MySQL database in FreeDB URL "https://freedb.tech/"
+		
+		Step 2: Install MySQL connector
+				>>pip install mysql-connector-python
+
+		Step 3: Make sure your item container is ready.
+
+		Step 4: Enable ITEM_PIPELINES in settings.py
+	
+		Step 5: Inside pipeline file
+				>>Check Books prject on github.
+				  Edit as your requerment.
+		Step 6: Test in your local machine with local MySQL database.
+		Step 7: Test with local machine and remote MySQL database.
+		Step 8: Make sure don't put DROP TABLE IF EXISTIS on. Heroku don't need this.
+
+
+
+### Job 9:
+----- Protect from avoid Ban
+		>>Follow Avoid Blocking IP txt.
+		  Do what ever you can do to make lower rat about avoid blocking.
+		  To change user-agen you can follow just any project file. Like 
+		  Good readers.
+
+
+
+### Job 10:
+------Deploy to cloud
+
+	Step 1: Follow up all code file are ready to deploy.
+	Step 2: Clean unwanted file and folder in project Folder.
+	Step 3: Creat Procfile
+			>>Procfile
+				worker: scrapy crawl Spidername
+	Step 4: Creat runtime file:
+			>>runtime.txt
+				python-3.8.8
+	Step 5: Create requirements.txt file
+			>>pip freeze > requirements.txt
+	Step 6: In requirements file delete:
+			>>twisted-iocpsupport==1.0.1
+	Step 7: Push code on Github.
+	Step 8: Read once full code in github.
+	Step 9: Create a Heroku app.
+	Step 10: Deploy code through Github.
+
+	Step 11: Login Heroku with cmd
+	Step 12: Login database
+	Step 13: Start the daynos:
+			>>heroku ps:scale worker=1 -a appname
+	Step 14: See logs some time:
+			>>heroku logs --tail -a appname
+	Step 15: See on database.
+	Step 16: If everything all right. Leave to run the program.
+
+### Job 11:
+---------Collect data from Database.
+
+
+Bom!------------------
+
+	
+
+
+						
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+		

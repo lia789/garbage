@@ -1,0 +1,34 @@
+
+
+---------------------- Steps about useing free proxy on Scrapy project
+
+# Job 1
+------Make sure you need proxy solution.
+      You can check how many page need to crawl and also test on Scraping-Hub it and Heroku it works or not.
+
+
+# Job 2
+-----Copy list of proxy on Chrome extention and put them on Github IP text file.
+
+# Job 3
+-----Add target urls on Github
+
+
+# Job 3
+----Deploy  code on Heroku
+
+
+# Job 4
+-----Insert logg paperfly add ons
+
+
+#Job 5
+---- Login Heroku and start dayno
+	>> heroku ps:scale worker=1 -a proxyfinderlia
+
+
+#Job 6
+----Copy proxy URLs
+
+
+**** You can find live proxy on logs ********

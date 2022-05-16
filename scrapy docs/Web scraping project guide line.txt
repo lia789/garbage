@@ -1,0 +1,61 @@
+
+
+
+Web scraping project guide line Static site:
+---------------------------------------------
+
+1. Understand Project:
+	- Write down project dead line
+	- Write down data requirment columns
+	- Write down storage format
+	- Write down if there are any extra requerment like GUI, Dashboard, Deploy cloud or local machine, need schedule or not.
+
+2. Design web scraping project:
+	- Find out which technology use target website.
+	- List down tools will need.
+	- Find out Scrapy project or Script need.
+	- Write down web page navigating structure and data collection process.
+	- Write down how many page need to crawl
+
+3. Do background research about target website:
+	- Check robots.txt
+	- Read Terms and Condition about target website
+	- Search internet if any thing there about webscraping target website
+
+4. Write down steps about avoid any restriction:
+	- Follow robots.txt
+	- Set user agent
+	- Enable Scrapy cash on devloping stage
+	- Enable autothrotal extention
+	- Figger out how many delay seconds will be perfect
+	- If need use proxy server and User agent.
+		* If you need to crawl avobe 1k page than try proxy server.
+		* Start findng IP.
+		* Use them on your program.	
+		* Use User-agent rotation.
+
+5. Start write code:
+	- Code should be clean, readble and well documented
+	- Handle any kind of code exceptions
+	- If need handle site containt stracture
+	- Clean data as much as possible
+
+6. Work with storage:
+	- Insure data is ready as requirments.
+	- If need configer code with MySQL
+	- If need configer code with Cloud database
+	- If need configer code with google sheet
+	- If need configer code with dropbox api
+
+7. Work with extension:
+	- If need work with extention like Dashboard, Web app, GUI
+
+8. Depoy code to run on cloud:
+	- Make sure your code ready to deploy.
+	- Check all settings A to Z before deploy.
+	- Deploy on cloud as requirments Heroku, AWS, Local machine.
+
+
+
+
+

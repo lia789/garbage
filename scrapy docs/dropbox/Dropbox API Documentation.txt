@@ -1,0 +1,24 @@
+
+
+---------- Guide line about working with Dropbox API
+
+
+# Upload file on Dropbox steps:
+	
+	Step 1: Install Dropbox module
+		>> pip install dropbox
+
+	Step 2: Creat app on dropbox console and setings properly
+	 	>> https://www.dropbox.com/developers/apps
+
+	Step 3: Write down this code:
+		>> from dropbox import Dropbox
+		   import dropbox
+
+		>> dbx = Dropbox("TOKEN")
+		
+		>> file_from = 'items.csv'          # File that you want to send
+		   file_to = '/ForHeroku/items.csv' # Drop box path
+		
+		>> with open(file_from, 'rb') as f:
+    			dbx.files_upload(f.read(), file_to, mode=dropbox.files.WriteMode.overwrite)

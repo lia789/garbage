@@ -1,0 +1,50 @@
+
+
+			Proxy Server Documentation
+		---------------------------------------
+
+
+
+# When should we need proxy?
+	- Extract geographical based data
+	- Crawling large number of page in my own production environment
+	- Write source code for web scraping product client end
+
+
+# List of free proxy site:
+	- https://www.webscrapingapi.com/         (1k request permonth free)
+	- https://proxyscrape.com/free-proxy-list ( Download as txt file)
+	- https://www.proxynova.com/proxy-server-list/
+	- https://spys.one/en/proxy-by-country/
+	- https://openproxy.space/list
+	- https://www.sslproxies.org/
+	- https://www.proxy-list.download/
+	- http://free-proxy.cz/en/
+	- https://www.proxyscan.io/
+
+
+# Using Proxy server with Scrapy project (Static site)
+	- Install proxy rotating package
+		>> pip install scrapy-rotating-proxies
+
+	- Follow settings on this project this url
+		>> https://github.com/TeamHG-Memex/scrapy-rotating-proxies
+
+	- Most important settings:
+		>> ROTATING_PROXY_PAGE_RETRY_TIMES=2
+		   ROTATING_PROXY_BACKOFF_BASE=100
+		   ROTATING_PROXY_CLOSE_SPIDER=False
+
+	- Add proxy list file in Scrapy project root directory and add this settings
+		>> from pathlib import Path
+		   filepath=Path("ip.txt")
+		   ROTATING_PROXY_LIST_PATH = filepath
+
+	- It is recomendent to use paid proxy
+
+# Scrapy ratating proxy doesn't work with Selenium.
+
+# It is wise full to use Scrapy-Selenium in a script not full project.
+  Write full webscraping code on script.
+
+# To use Selenium proxy you can follow the script file.

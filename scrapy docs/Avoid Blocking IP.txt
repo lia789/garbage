@@ -1,0 +1,185 @@
+
+
+------- Avoid IP Ban
+
+### We should protec through this list of steps:	
+		- Background research about target website.
+		- Use Scrapy Cache in devlopment stage.
+		- Obey Robots.txt
+		- Enable Autothrotal extension.
+		- Add random sleep time or slow down.
+		- Shuffle url list.
+		- Rotat User Agent and IP matualy.
+
+### Target website background research steps:
+		- Check robots.txt
+		- Read data polacy
+		- Find out technology website use
+		- Estimates a site through google crawler (site:url)
+
+
+
+### Random sleep
+		>>from random import randint
+		  from time import sleep
+
+		  sleep(randint(3,10)*.8082)
+
+### Shuffle url list:
+		>>import random
+		  mylist = ["apple", "banana", "cherry"]
+		  random.shuffle(mylist)
+		  print(mylist)
+
+
+### Rotating User Agent:
+
+		Step 1: In middlewares.py
+			>>from scrapy.downloadermiddlewares.useragent import UserAgentMiddleware
+			  import random, logging
+
+
+			  class UserAgentRotatorMiddleware(UserAgentMiddleware):
+						user_agents_list=[
+                                                            "agent_2",
+                                                            "agent_3",
+                                                            "agent_4"
+        
+                                                               ]
+
+			 def __init__(self, user_agent=''):
+                                             self.user_agent=user_agent
+			 
+			 def process_request(self, request, spider):
+        				try:
+            					self.user_agent=random.choice(self.user_agents_list)
+            					request.headers.setdefault('User-Agent',self.user_agent)
+        				except IndexError:
+            				 	logging.error("Could not fetch user agent")
+
+		Step 2: In settings.py
+			>>DOWNLOADER_MIDDLEWARES = {
+   					'scrapy.downloadermiddlewres.useragent.UserAgentMiddleware': None,
+   					'ProjectName.middlewares.UserAgentRotatorMiddleware': 400 
+					}
+			# Only change project name, it already exit. Yoy just need to change 543 to 400
+			  and add UserAgentRotatorMiddleware or chang project name
+
+
+	
+		Step 3: To check user-agent in spider.py
+			>>yield{
+			   "user-agent": response.request.headers.get('User-Agent').decode('utf-8')
+			   }
+
+
+
+
+
+
+### Rotating IP
+	
+	Step 1: To check ip in spider.py
+				>>def start_requests(self):
+        					for i in range(5):
+            						yield scrapy.Request(url='http://httpbin.org/ip',dont_filter=True)
+
+
+				 def parse(self, response):
+        					print(response.text)
+
+	Step 2: Run spider with:
+				>>scrapy crawl SpiderName -L WARN
+
+
+
+
+	Step 3: Install package (GitHub Link: "https://github.com/TeamHG-Memex/scrapy-rotating-proxies")
+				>>pip install scrapy-rotating-proxies
+
+
+	Step 4: Create a list of proxy ip format like, ip:port.
+		To check it works or not
+				>>import requests
+				  import random
+				  import csv
+				  import concurrent.futures
+
+				  proxylist = []
+
+				  with open('iplist.txt', 'r') as f:
+    					reader = csv.reader(f)
+    					for row in reader:
+        					proxylist.append(row[0].strip())
+
+				  len(proxylist)
+
+				  def extract(proxy):
+    						headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.90 Safari/537.36'}
+
+    						try:
+        						r = requests.get('https://httpbin.org/ip', headers=headers, proxies={'http' : proxy,'https': proxy}, timeout=2)
+        						#r = requests.get('http://www.royalfruitsrl.it/en/about-us.html', headers=headers, proxies={'http' : proxy,'https': proxy}, timeout=2)
+        						print(r.json(), ' | Works')
+    						except:
+        						pass
+        						#print("Don't work")
+        
+    
+    						return proxy
+
+				with concurrent.futures.ThreadPoolExecutor() as executor:
+        					executor.map(extract, proxylist)
+
+
+	Step 5: Add list of live ip in settings.py:
+				>>ROTATING_PROXY_LIST = [
+							'158.255.215.50:16993',
+    							'159.8.114.37:8123'
+							]
+
+
+
+	Step 6: Add downloder middleware in settings
+				>>DOWNLOADER_MIDDLEWARES = {
+    					# ...
+    					'rotating_proxies.middlewares.RotatingProxyMiddleware': 610,
+    					'rotating_proxies.middlewares.BanDetectionMiddleware': 620,
+    					# ...
+					}
+
+
+	Step 7: Some common Argument about this proxy-pool
+				>>ROTATING_PROXY_PAGE_RETRY_TIMES=5
+				>>ROTATING_PROXY_BACKOFF_BASE=300
+				>>ROTATING_PROXY_BACKOFF_CAP=3600
+
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

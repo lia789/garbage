@@ -1,0 +1,678 @@
+
+
+********************************* Scrapy Code snipet ******************************
+
+# To send request we can pass two way
+	B. yield scrapy.Request(url=Url, callback=self.parse)
+	A. yield response.follow(nextPage, callback=self.parse)
+
+# To edit start_url
+	def start_requests(self):
+        	url = 'http://quotes.toscrape.com/'
+        	yield scrapy.Request(url=url, callback=self.parse)
+
+# To read Urls from CSV file in Scrapy spider
+	>> from csv import reader
+
+        	with open('1.csv', 'r') as f:
+            		csvReader = reader(f)
+            		rawUrls = list(csvReader)
+            		urlListTags=rawUrls[1:]
+
+            		for i in urlListTags:
+                		Url=i[0]
+                		yield scrapy.Request(url=Url, callback=self.parse)
+
+# To pass meta data with spider
+	>> yield response.follow(url=CountryLink, callback=self.country, meta={"CountryName": CountryName})
+	>> CountryName=response.request.meta["CountryName"]
+
+# To remove unwanted space with normalize spaces
+	>>response.xpath("normalize-space(xpath/text())").get()
+
+# Scrapy settings:
+	>> LOG_FILE="Logs.txt"
+	>> CLOSESPIDER_PAGECOUNT=50
+	>> CLOSESPIDER_ITEMCOUNT=50
+
+# 
+
+******************************************************
+
+
+
+
+
+# https://www.accordbox.com/blog/scrapy-tutorial-9-how-use-scrapy-item/
+
+
+# ### Job 7
+----Clean Data and ready for SQL database.
+	
+		Step 1: Write down exactly output format and markdown data cleaning jobs. And do cleaning as your requerment.
+		Step 2: Convert yield to Item object
+				# In items.py file declare items
+						>> column1=scrapy.Field()
+		   				   column2=scrapy.Field()
+		   				   column3=scrapy.Field()
+				# In Spider need to import item class
+						>>from ..items import ClassNameItem
+				# Create item class object
+						>>item=ClassNameItem()
+				# Assign each field to the item object
+						>>item["Column1"]=ColumnName1XpathExtractData
+		  				  item["Column2"]=ColumnName2XpathExtractData
+		  				  item["Column3"]=ColumnName3XpathExtractData
+
+		 				  yield item
+		Step 3: To clean data it is recomendent use inside spider before passing in item object.
+			You can make your own with search and look github project.
+			Look also your spider code with Itemloader scrapy. Find out it help full or not in your project.
+
+		Step 4: Run spider and check all is alright.
+
+
+********************************************************
+
+
+
+
+---------------- Scrapy with Database
+
+
+#### Convert Scrapy dictionart to Items.
+	
+	Steps are:
+		
+		Step 1: Define Data field inside items.py
+				>>Text=scrapy.Field()
+    				  Author=scrapy.Field()
+    				  Tags=scrapy.Field()
+
+		Step 2: Import Spider file ClassItem
+				>>from ..items import QuotesbotItem
+
+		step 3: Declear class object inside parse method
+				>>item=QuotesbotItem()
+
+		Step 4: Assign each field to the item object acroding to item.py
+				>>item["Text"]=text
+            			  item["Author"]=author
+            			  item["Tags"]=tags
+				
+				  yield item
+
+		
+		--- It will store Columns data memory size (small to large)
+
+
+
+### Data base object concept only python:
+		
+		Steps are:
+				
+			Step 1: Import library
+					>>import sqlite3
+	
+			Step 2: Start conncet with database
+					>>conn=sqlite3.connect("DatabaseName.db")
+			
+			Step 3: Make curser
+					>>curr=conn.cursor()
+			
+			Step 4: Create table
+					>>curr.execute("""CREATE TABLE TableName(
+									ColumnName DataType,
+									ColumnName DataType,
+									ColumnName DataType)
+							""")
+
+			Step 5: Insert Data
+					>>curr.execute("""INSERT INTO TableName VALUES(
+										"Value","Value","Value"
+										)
+							""")
+
+			Step 6: Commit or save
+					>>conn.commit()
+			
+			Step 7: Close user connection
+					>>conn.close()
+
+
+#### To see database data we use online sqlite IDE url: https://sqliteonline.com/
+
+
+#### Store Scrapy data to Data base (Sqlite3)
+		
+
+		Steps are:
+			
+			Step 1: Convert Scrapy yeild data to item
+
+			Step 2: Import database module on pipelines.py file
+					>>import sqlite3
+
+			Step 3: Create __init__ for connection, create table
+					>>def __init__(self):
+        					self.create_connection()
+        					self.create_table()
+
+			Step 4: Create database connection function:
+					>>def create_connection(self):
+        					self.conn=sqlite3.connect("DatabaseName.db")
+        					self.curr=self.conn.cursor()
+
+			Step 5: Create table function:
+					>>def create_table(self):
+        					self.curr.execute("""DROP TABLE IF EXISTS Data""")
+        					self.curr.execute("""CREATE TABLE TableName(
+            								ColumnName Datatype,
+            								ColumnName Datatype)
+            							""")
+			
+			Step 6: Inside process_item
+					>>self.store_db(item)
+					  return item
+
+	
+			Step 7: Create data insert function and commit
+					>>def store_db(self,item):
+        						self.curr.execute("""INSERT INTO Data VALUES (?,?)""",(
+        							item["Author"],
+        							item["Text"]
+        							))
+
+        						self.conn.commit()
+
+			Step 8: Enable ITEM_PIPELINES in settings file with pipline class. (Not some_pipeline)
+
+			Step 9: Open database on online.
+
+***********************************************
+
+
+
+					-----  Scrapy  -----
+# We can use get() and getall()
+# Extract data with xpath  	>>response.xpath('XpathPattern').get()
+# We can get xpath text data by 	>>('a/text()').get()
+# We can get xpath link data by 	>>('a/@href').get()
+# To get sub xpath for loop in xpath, it's mandatory use dot 	>>i.xpath('./xpath/text()').get()
+# Extract Data with list of yield options:
+	1. 	>>yield	{
+			"Text":data.xpath('a/text()').get(),
+			"Author":data.xpath('a/text()').get()
+			}
+	2. 	>>item["Column1"]=Column1
+		  item["Column2"]=Column2
+		  item["ColumnN"]=ColumnN
+
+		  yield item
+# Follow link in Scrapy:
+	if NextPage is not None:
+		yield response.follow(URL,self.MethodName)
+
+# Scrapy every spider name should be unique.
+# In Spider, allowed_domains take list of url that only Scrapy allow to crawl
+# Spider start_urls, that list of url where scrapy start to crawl.
+# As our data requerment, target web site stracture we can easily customaize our spider setting with Built-in-settings reference.
+
+
+
+# Instend of start_urls in Scrapy spider we can use start_requests() directly: to get data more structue away.
+# Scrapy crawl spider templete is most commonly used spider for crawling a website.
+# We can extract all requer links and follow them some based on link.
+# Rules are:
+	>> rules=(
+		Rule(LinkExtrctor(restrict_xpaths="xpath With out /@href"),callback="parse_item",follow=True),
+		Rule(LinkExtrctor(restrict_xpaths="xpath With out /@href"),callback="YourDefineMethod",follow=True)
+		)
+# Rules are alawys follow order, so be wise using crawl spider templete.
+
+# We can get extract data from response 2 away:
+	
+	1. response.css()
+	2. response.xpath()
+# It is recomendent to use Xpath. CSS under the hood convert into Xpath.
+# We can get text data by 3 way:
+	1. get()
+	2. getall()
+	3. re()
+# There is a options called remove namespaces that modify nodes, these is very rare.
+		>>response.selector.remove_namespaces()
+# We can convert any other format of html to selector object by scrapy, it is very handy with Selenium.
+	>>from scrapy import Selector
+	>>response=Selector(text=PageSourceHtmlFile)
+# To normalize space in xpath we can use normalize-space:
+	>>response.xpath("normalize-space(xpath/text())").get()
+
+
+
+
+*************************************************************************************************************
+# In larger production invironment and to configer data base it is mendotory extract data as item.
+# There are 4 steps to convert extract data to item:
+	Step 1: In items.py file declare items
+		>> column1=scrapy.Field()
+		   column2=scrapy.Field()
+		   column3=scrapy.Field()
+
+	Step 2: In Spider need to import item class
+		>>from ..items import ClassNameItem
+
+
+	Step 3: Create item class object
+		>>item=ClassNameItem()
+	
+	Step 4: Assign each field to the item object
+		>>item["Column1"]=ColumnName1XpathExtractData
+		  item["Column2"]=ColumnName2XpathExtractData
+		  item["Column3"]=ColumnName3XpathExtractData
+
+		  yield item
+# We can clean data in item file.
+
+
+
+
+
+
+# Item loader is more convineant in big project.
+# It help to automate some data cleaning task.
+
+
+
+
+
+
+# In item pipeline, every item pipeline componet is python class. We can easily aline our code with item class object.
+# Typical uses of item pipelines are:
+	
+	1. Cleansing HTML data.
+	2. Validating scraped data.
+	3. Checking for duplicates.
+	4. Storing scraped data item in Database.
+# There are 4 steps to store data in Database:
+
+	Step 1: Convert scrape data into item.
+	Step 2: Write Database code to connect database and create table stracture.
+	Step 3: Write code about store item data in database.
+	Step 4: Active items pipleine middleware in settings.py file.
+
+
+
+
+
+
+# We can feed data this tupe of format:
+	1. JSON
+	2. CSV
+	3. XML
+	4. CSV
+	5. Pickel
+	6. Marshal
+# Feed export support multiple storage backend types which are defiend by the URL schema.
+	1. Local filesystem
+	2. FTP	
+	3. S3
+	4. Goole cloud storage
+	5. Standard output
+
+
+
+
+
+
+
+
+# Scrapy uses Requests and Response object to crawl a website.
+# Request object argument:
+	1. url
+	2. callback
+	3. http method
+	4. meta
+	5. body
+	6. headers
+	7. cookies
+	8. encoding
+	9. priority
+	10. donot_filter
+	11. errback
+	12. flags
+	13. cd_kwargs
+
+
+
+
+
+
+
+# Scrapy setting allows us to customize behaviour of all :
+	1. Scrapy components
+	2. Core
+	3. Extensions
+	4. Pipelines
+	5. Spider
+# We can sustomize settings via:
+	1. Command line options
+	2. Settings per-spider
+	3. Project settings module
+	4. Default settings per-command
+	5. Default global settings
+# You can check any settings in documentation as requerment.
+
+
+
+
+
+
+
+
+# In Scrapy, we can use BeautifulSup. But Scrapy has his own built data extractor Xpath or CSS that is more robust then bs4.
+# We can use Scrapy with bs4 like that:
+	>>soup = BeautifulSoup(response.text, 'lxml')
+
+# Scrapy use Django frame work.
+
+# Scrapy work with HTTP proxies.
+  We just need to configer it with HttpProxyMiddleware.
+
+# We can run a spider with project
+	>>scrapy runspider my_spider.py
+
+# You can wite download dealy inside a spider code:
+	>>class MySpider(CrawlSpider):
+		name = 'myspider'
+		download_delay = 2
+    		# [ ... rest of the spider code ... ]
+
+# Scrapy handle automacily cookies as a browser dose.
+  You can also see COOKIES_DEBUG settings.
+
+# You can download as a bytes of html to avoid memory esue. With out download full html.
+
+
+
+
+
+
+
+# Debugging a Spider options:
+	- Parse Command
+	- Scrapy Shell
+	- Open in browser
+	- Logging
+
+
+
+
+
+
+
+#  You can run a spider via script.
+
+# You can also run multiple spider at a once.
+
+# You can also distributed crawler in big project.
+
+# Avoid gettng banned:
+	* Rotate User Agent
+	* Disable cookies as per as requerment
+	* Use downlod delays
+	* If possible use google cache
+	* Use a pool of rotating IP
+
+
+
+
+
+
+# Deploying Spiders
+
+# Running Scrapy spiders in local machine is very convenient for small project,
+  But not so much when you need to execute long-running spider or production level
+  with continuously running.
+
+# Populer choices for deploying Scrapy spiders are:
+	- Scrapyd (Open source)
+	- Scrapy Cloud (cloud-based)
+
+# To deploy and shedule a spider in local machine we use scrapyd. It open a local
+  host.
+# Along with scrapyd we need to server deploy utility called Scrapyd-clint. To install
+  it proparly we type 	>>pip install git+GithubRepoURL.
+# To another tool called crul need to send request throug command line in scrapyd.
+
+
+
+
+
+
+##### Avoiding getting banned
+
+# Steps to avoid banned:
+	- Rotate your user agent
+	- Disable cookies
+	- Use download delays
+	- Use a pool of rotating IPs
+
+
+# Rotating user agent in scrapy:
+	
+	Step 1: In middlewares.py
+			
+			>>from scrapy.downloadermiddlewares.useragent import UserAgentMiddleware
+			  import random, logging
+
+			  class UserAgentRotatorMiddleware(UserAgentMiddleware):
+    					user_agents_list=[
+                                                            "agent_1",
+                                                            "agent_2",
+                                                            "agent_3",
+                                                            "agent_4"
+        
+                                                               ]
+	                               
+                                        def __init__(self, user_agent=''):
+                                              self.user_agent=user_agent
+
+                                        def process_request(self, request, spider):
+        					try:
+            					    self.user_agent=random.choice(self.user_agents_list)
+            					    request.headers.setdefault('User-Agent',self.user_agent)
+        					except IndexError:
+            				 	    logging.error("Could not fetch user agent")
+
+
+
+ 	Step 2: In settings.py
+			>>DOWNLOADER_MIDDLEWARES = {
+   					'scrapy.downloadermiddlewres.useragent.UserAgentMiddleware': None,
+   					'ProjectName.middlewares.UserAgentRotatorMiddleware': 400
+					}
+
+# To check user-agent in spider:
+	>>yield{
+		"user-agent": response.request.headers.get('User-Agent').decode('utf-8')
+		}
+
+
+# To check scrapy send IP:
+	>>def start_requests(self):
+        	for i in range(5):
+            		yield scrapy.Request(url='http://httpbin.org/ip',dont_filter=True)
+
+	  def parse(self, response):
+        	print(response.text)
+	
+	Run Spider:
+		>>scrapy crawl SpiderName -L WARN
+
+
+
+
+# Rotating IP addres in Scrapy:
+	
+	Step 1: Install package (GitHub Link: "https://github.com/TeamHG-Memex/scrapy-rotating-proxies")
+		>>pip install scrapy-rotating-proxies
+
+	Step 2: Create a list of proxy ip format like, ip:port. 
+	Step 3: Add path ip list on settings file
+		>>ROTATING_PROXY_LIST_PATH = 'C:\\Users\\88015\\Desktop\\B\\Proxy.txt'
+	
+	Step 4: Add downloder middleware:
+		>>DOWNLOADER_MIDDLEWARES = {
+    			# ...
+    			'rotating_proxies.middlewares.RotatingProxyMiddleware': 610,
+    			'rotating_proxies.middlewares.BanDetectionMiddleware': 620,
+    			# ...
+			}
+	Step 5: You can fine tune settings like:
+		>>ROTATING_PROXY_PAGE_RETRY_TIMES=5
+		>>ROTATING_PROXY_BACKOFF_BASE=300
+		>>ROTATING_PROXY_BACKOFF_CAP=3600
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### Handeling Java Script
+
+# We can handeling java script site with two aways:
+	- Splash
+	- Selenium
+
+# My desktop config dosn't fill Splash, Docker vnv requerment.
+
+# To handle java script we use Selenium.
+
+#### Selenium
+
+# Selenium docementation link "https://selenium-python.readthedocs.io/index.html"
+# Scrapy with Selenium integration github link "https://github.com/clemfromspace/scrapy-selenium"
+
+# Selenium with Scrapy:
+	
+	Step 1: Install Selenium package
+			>>pip install selenium
+	
+	Step 2: Download chrome driver with help of Selenium documentation
+
+	Step 3: Write browser automation code on Jupyter lab notebook
+	
+
+	Step 4: Install Scrapy-Selenium package
+			>>pip install scrapy-selenium
+
+	Step 5: Edit settings.py file
+		>>from shutil import which
+		  SELENIUM_DRIVER_NAME = 'chrome'
+		  SELENIUM_DRIVER_EXECUTABLE_PATH = which('chromedriver')
+		  SELENIUM_DRIVER_ARGUMENTS=['--headless']
+
+	Step 6: Add downlodmiddleware
+		>>DOWNLOADER_MIDDLEWARES = {
+    			'scrapy_selenium.SeleniumMiddleware': 800
+			}
+
+	Step 7: Import requer Selenium module
+		>>from selenium import webdriver
+		  from selenium.webdriver.chrome.options import Options
+		  from selenium.webdriver.common.keys import Keys
+		  from selenium.webdriver.common.by import By
+		  from selenium.webdriver.support.ui import WebDriverWait
+		  from selenium.webdriver.support import expected_conditions as EC
+		  from selenium.webdriver import ActionChains
+		  import time
+
+	Step 8: Import Scrapy selector module
+		>>from scrapy.selector import Selector
+		
+		In middle of code we need to convert selenium object to scrapy selector by:
+		>>html=driver.page_source
+		>>resonse_object=Selector(text=html)
+
+	Step 9: Import Selenium request module for request 
+		>>from scrapy_selenium import SeleniumRequest
+
+	Step 10: Delete Allowed domain and start urls. Write down start request functon
+		>>def start_requests(self):
+        		yield SeleniumRequest(url,callbacke)
+	
+	Step 11: To get selenium driver in to callback function:
+			>>driver=response.meta["driver"]
+
+	Step11: Write down selenium perfrom code in function
+
+	Step12: 
+
+
+
+
+
+
+
+
+
+### Scrapy with Heroku
+
+# Deploy Scrapy project on Heroku:
+
+	Step 1: Create a robust Scrapy project
+	
+	Step 2: Singup Heroku free acount
+
+	Step 3: Download and install The Heroku CLI
+
+	Step 4: To login heroku in cmd type:
+			>>heroku login
+		After login confirm on browser with click login button
+
+	Step 5: To confram login type:
+			>>heroku keys
+	
+	Step 6: To add SSH key:
+			>>heroku keys:add
+
+	
+	
+	Step 7: 
+
+
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
