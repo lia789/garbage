@@ -1,0 +1,79 @@
+			=================================================
+				Dynamic Website Project Guideline 
+			=================================================
+
+
+1. Be sure it's a Dynamic website.
+
+2. Write down data structure with proper format.
+
+3. Write down website navigation stracture, and data extraction plan on paper.
+
+4. Check captcha security on tools.py file
+
+5. Create a project root folder on Desktop with project name.
+
+6. Write Slenium code on Jupyter-Notebook and prepare for Scrapy project:
+	- Handle advance js
+	- Handle Selenium exceptions
+	- Handle Proxy and Captcha
+	- Write XPath data extraction code
+
+
+7. Configure Scrapy Project:
+	A. Create a Scrapy project and spider
+		>> scrapy startproject projectName
+	  	>> cd projectRoot
+		   scrapy genspider app www.xyz.com
+	B. Setup Scrapy for Selenium
+		>> from scrapy.selector import Selector
+		>> #in spider file, on spider class
+		   start_urls = ["http://quotes.toscrape.com"]
+		>> #Write Selenium setup constractor
+		       def __init__(self):			# must handle Selenium exception, otherwise Scrapy code will break
+        			options = Options()
+        			options.add_argument("--start-maximized")
+        			chrome_path = which("chromedriver")
+        			self.driver = webdriver.Chrome(executable_path=chrome_path, options=options)
+        			self.driver.get("https://www.zillow.com/homes/85001_rb/")
+	
+
+8. Write item loader code:
+	A. Write code on items.py
+		>> #Import libray on items.py
+		   from itemloaders.processors import TakeFirst, MapCompose
+		   from w3lib.html import remove_tags
+		   import re
+	B. Write down columns fields in an item class
+		>> Column1=scrapy.Field(input_processor=MapCompose(remove_tags), output_processor=TakeFirst())
+		>> Column2=scrapy.Field(input_processor=MapCompose(remove_tags,YourInBuildFunctios), output_processor=TakeFirst())
+	C. Inside spider file import library
+		>> from ..items import ClassNameItem
+		   from scrapy.loader import ItemLoader
+	D. In spider file where yeild start extracting data, create an Itemloder object
+		>> #Selector will be your loop iterator I or response
+  		   l = ItemLoader(item=ClassNameItem(), selector=response)
+	E. #Convert yeild to item loader
+        	>> l.add_xpath('Title', 'normalize-space()')
+        	>> l.add_xpath('NumberOfReviews', '')
+		   yield l.load_item()
+
+
+ 
+9. Write spider code help of documnentations:
+	- Scrapy documentations File
+	- Scrapy static site project file
+
+
+
+
+10. Clean data as requerments:
+	A. Open a Jupyter-Notebook for data cleaning task and Drop sample csv file
+	B. Make a list data cleaning task you need to done
+	C. Write data cleaning function code on Jupyter-Notebook help of DATA_CLEANING_CODE.ipynb
+	D. Make small your scraper code for test data clean code again and again
+
+
+11. Deploy on cloud.
+12. Analize extract data.
+13. Document and build code for next level production.
