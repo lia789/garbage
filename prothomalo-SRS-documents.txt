@@ -1,0 +1,231 @@
+title: prothomalo headline scraper
+type of project: solution-script
+
+
+project row text:
+hi,
+I need a scraper that will scrape 'https://www.prothomalo.com/' headline news and sub-headline news,
+store on well-formatted google sheets.
+Basically, I need this feature:
+	- Script will check every hour prothomalo website
+	- Scrape the main headline and store it on a google sheet, latter I want to see the last 24 headlines in a single sheet.
+    This sheet needs to update every day with new data.
+  - Script will store all sub-headline on a google sheet, and also do the same thing as the main headline
+  - I also need to store all data in two archive history files for future analysis
+can you do this?
+
+
+price: 80$
+deadline: 5H
+
+
+functional requirement:
+    - scrape prothomalo headline and sub-headline
+    - well formatted google sheet
+    - run script every hour
+    - a google sheet that show last 24 hour main headline in a single sheet, google sheet should update daily
+    - a google sheet that show last 24 hour sub-headline in a google sheet, google sheet should update daily
+    - a main headline archive history google sheets
+    - a sub-headline archive history google sheet
+
+nonfunctional requirement:
+    - setup google sheet for client end
+    - setup Heroku server
+    - format google sheets
+    - setup logs process
+  
+
+identify user: linkedin peoples and future myself
+code run environment: Heroku
+
+
+5 star guidelines:
+    - resource free development
+    - clean and colorful format google sheet
+    - well document source code
+    - store all resource with a project file on admin repository
+
+
+data structure:
+    * headline worksheet
+          - headline
+          - headline url
+          - time ago
+    * headline archive worksheet
+          - headline
+          - headline url
+          - image url
+          - date
+    * sub-headline worksheet 
+          - headline
+          - headline url
+    * sub-headline archive worksheet
+          - headline
+          - headline url
+          - image url
+          - date
+
+
+what you want for client:
+    - google sheet credentials
+    - Heroku credentials
+
+
+program description for developer:
+a solution that will scrape 'https://www.prothomalo.com/' for headlines and 'https://www.prothomalo.com/collection/latest' for latest
+sub-headlines.
+a script will run every hour read webscraping data, read google sheet data, concat two sheet, filter and rewrite google sheets
+a script will run once in 24H clear google sheet data.
+their will be 4 google sheets:
+      1. today headlines
+      2. headlines archive history
+      3. today sub-headlines
+      4. sub-headlines archive history
+
+
+description for building class:
+a script run on corn job,
+script will do thi list
+        read existing csv data,
+        read existing google sheet data,
+        concat two google sheets
+        filter duplicate
+        upload on google sheet
+
+
+identify objects:
+    - google sheet
+            * read data from google sheet and return a df
+            * write google sheet based on existing ready to upload df
+    - csv manipulation
+            * read existing csv data to a df
+            * read google sheet to df
+            * concat two df
+            * filter duplicate
+            * return a ready to upload google sheets csv file
+
+
+working with objects:
+    * google sheets
+        class name: GoogleSheet
+        precondition: google credentials, google worksheet
+        post condition: write google worksheet
+        attributes:
+            # credentials
+            # google sheet name
+            # work sheet name
+        behaviors:
+            # reading_worksheet()
+                    return df
+            # writing_worksheet(df)
+                    return true write google worksheet
+    
+    * csv data manipulation
+        class name: FilterDuplicate
+        precondition: existing scraping csv file, google sheet reading data as df
+        post condition: return a ready to upload df for upload on google worksheet
+        attributes:
+            # csv file name
+            # df 
+        behaviors:
+            # reading csv to df
+                return df
+            # filter duplicate(df1, df2)
+                concat two df
+                filter duplicate
+                return a ready to upload df
+
+    * objects to objects integration
+            # FilterDuplicate will use GoogleSheet
+            # main.py will use FilterDuplicate
+
+
+write initial code structure:
+    - scrapy project
+    - main.py   # This will run every hour
+    - reset.py  # This will run once every 24H
+    - utils.py  # That will hold class
+
+
+
+
+decompose problems:
+      * web scraping two prothomalo web page
+              - 'https://www.prothomalo.com/'
+              - 'https://www.prothomalo.com/collection/latest'
+      * building google sheets
+              - 4 google sheet need to format
+                      +today's headlines
+                      +today's sub headlines
+                      +archive headline history
+                      +archive sub headline history
+              - build a google sheet class for data manipulation
+      * deploy on cloud
+                - main.py will run every hours
+                - reset.py will run every 24h and reset two headline google sheet
+      * building as product
+                - follow 5 star guidelines
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+google sheet class:
+    * class HeadlineUpdate
+            - A class that will read existing csv file, read google csv file both as pandas dataframe.
+              Concat two dataframe, filter and again upload on google sheet.
+    * class ArchiveUpdate
+            - A class that will read existing csv file and upload on google sheet and
+              execute google macro code to delete duplicate.
+
+write data extraction plan:
+    * there will be two spider
+            - headline_scraper
+            - sub_headline_scraper
+    * We need to render javascript
+    * We will be using Selenium, it don't show captcha
+
+write initial code structure:
+    - scrapy project
+    - main.py   # This will run every hour
+    - reset.py  # This will run once every 24H
+    - google_sheet.py   # That will hold google sheet class
+
+
+
+
+## Work Process ##
+1. How to design class?
+2. How to write Python class code?
+3. How to write best practice code?
+4. How to execute macro code on google sheet? or How to filter duplicate data automatically
+5. How to add logs that will give us notify when Selenium will fail or scraper stop
+6. Build prothomalo scraping code
+7. build google sheet class
+8. build main.py
+9. build reset.py
+10. Write xpath code on jupyter lab  #Done
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
