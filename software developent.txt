@@ -1,0 +1,64 @@
+### Software Development ###
+
+
+Gola:
+Best Python web scraping freelance Software Developer, earning 5k$ every month.
+
+
+Type of application you will build:
+	- Web Application
+	- Script
+	- GUI
+	- Command line tools
+	- 3rd party plugins
+
+
+Resources about software development:
+	* Requirements analyze book 'Requirements Engineering for Software and System' by Phillip A. Laplante
+	* OOA, OOD, OOP book 'Object-Oriented Analysis and Design With Application' 3rd eddition by Grady Booch
+	* OOA, OOD, OOP Youtube lecture 'https://www.youtube.com/playlist?list=PLJ5C_6qdAvBHslIkD7JB7kBdgv1SeXy3P'
+
+
+Phase of freelance software projects:
+	1. requirements analyze
+	2. building SRS documents (design)
+	3. writing code
+	4. closing project
+
+
+Building SRS Documents:
+	- title
+	- type of project
+	- deadline
+	- price
+	- raw requirements text
+	- functional requirements
+	- nonfunctional requirements
+	- identify user
+	- data structure
+	- code run environment
+	- 5 star freelance guideline
+	- client end materials
+
+
+Developer Documents:
+	- Build canonical from of system
+	- Write data extraction plan
+	- Identify class and objects
+	- Build UML diagrams
+	- Write initial code structure
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+	
