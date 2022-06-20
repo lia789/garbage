@@ -1,0 +1,119 @@
+## Django Projects ##
+
+
+Django project task:
+	- define business goals
+	- build website structure
+	- build wireframe diagrams every webpage
+	- write django code
+		*****
+	- setup django project
+		* create templates and static files
+		* work with settings.py file
+	- write view functions and define urls with demo text code
+	- design base.html file for using templates
+	- desing other pages
+	- define veiw functions
+	
+
+
+
+
+
+Django code writen guidelines:
+	1. Project development setup via command line
+		* project 
+		* application
+		* project level templates and static directory with base.html, 404.html and styles.css
+			- mkdir -p templates/ && touch $_/base.html $_/404.html && mkdir -p static/ && touch $_/styles.css
+		* application level urls.py, templates and static directory
+			- touch urls.py && mkdir -p templates/app_name && mkdir -p static/app_name
+	
+	2. Work with settings.py file
+		* application add on INSTALLED_APPS
+		* synchronize 'template' dir path
+			- DIRS': [BASE_DIR / "templates"]
+		* synchronize static path
+			- STATICFILES_DIRS = [BASE_DIR / 'static']
+			
+	3. Work urls and views project structure setup level
+		* define list of urls on paper
+		* write code on urls.py file
+			- from django.urls import path
+			  from . import views
+			- urlpatterns = [ path('', views.home_page, name="Home-Page")]
+		* synchronize application urls.py with project urls.py
+			- from django.urls import path, include
+			- urlpatterns = [path('admin/', admin.site.urls), path('', include("aplication_name.urls"))]
+		* write html code for every urls 
+		* define view functions every urls
+			- def home_page(request):
+    				return render(request, "application_name/home_page.html")
+    		* runserver and test project structure
+  
+  
+  
+=======================================================
+
+
+
+
+
+
+
+
+
+
+
+
+Design base.html for using as html templates:
+	* title tags
+		- <title>{% block title %}{% endblock title %}</title>
+	* adding css file on base.html file
+		- {% load static %}
+		  <!DOCTYPE html>
+		- <link rel="stylesheet" href="{% static "styles.css" %}">
+	* add different block with different name
+		- {% block block_name %}{% endblock %}
+		
+	* working on child html file
+		- {% extends "base.html" %}
+		  <title>{% block title %} as your requirements title {% endblock title %}</title>
+		- {% block block_name %} data with html tags {% endblock %}
+		   
+		
+	
+
+		
+
+	
+
+	
+	
+## Garbage ##	
+Django project settings:
+	* create project
+	* create application
+	* create project level templates and static file with base.html and styles.css file
+		- mkdir -p templates/ && touch $_/base.html && mkdir -p static/ && touch $_/styles.css
+	* create urls.py file, templates and static dir on application level
+		- touch urls.py && mkdir -p templates/app_name && mkdir -p static/app_name
+	* add 404.html file on project templates 
+	
+	
+	
+Work with settings.py file:
+	* add application name on INSTALLED_APPS
+	* add path about project level 'templates' dir
+		- 'DIRS': [BASE_DIR / "templates"]
+	* add path about project level 'static' dir
+		- STATICFILES_DIRS = [BASE_DIR / 'static']
+	
+	
+	
+	
+	
+	
+	
+	
+	
